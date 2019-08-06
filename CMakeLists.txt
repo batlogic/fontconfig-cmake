@@ -46,6 +46,10 @@ add_definitions(${CMAKE_REQUIRED_DEFINITIONS})
 
 find_package(expat)
 find_package(freetype)
+find_package(libpng)
+find_package(zlib)
+find_package(libiconv)
+
 
 set(DIR ${CMAKE_CURRENT_LIST_DIR})
 set(FC_ARCH 		${DIR}/fc-arch/fc-arch.c)
@@ -55,7 +59,7 @@ set(FC_CAT			${DIR}/fc-cat/fc-cat.c)
 set(FC_GLYPHNAME	${DIR}/fc-glyphname/fc-glyphname.c)
 set(FC_LANG			${DIR}/fc-lang/fc-lang.c)
 set(FC_LIST			${DIR}/fc-list/fc-list.c)
-set(FC_MATCH		${DIR}/fc-match/fc-match.c)
+set(FC_MATCH		${DIR}/fc-match/fc-match.c)               
 set(FC_QUERY		${DIR}/fc-query/fc-query.c)
 set(FC_SCAN			${DIR}/fc-scan/fc-scan.c)
 file(GLOB FONTCONFIG ${DIR}/src/*.c)
@@ -65,6 +69,8 @@ set(DIRENT			${DIR}/win32/dirent.c)
 
 include_directories(	${EXPAT_INCLUDE_DIRS} 
 						${FREETYPE_INCLUDE_DIRS} 
+						${ZLIB_INCLUDE_DIRS} 
+						${ICONV_INCLUDE_DIRS} 
 						${DIR}/src 
 						${DIR}/win32
 						${CMAKE_CURRENT_LIST_DIR}
@@ -85,7 +91,7 @@ if(MSVC)
 	list(APPEND LIBRARIES_TO_LINK dirent)
 endif()
 
-list(APPEND LIBRARIES_TO_LINK ${EXPAT_LIBRARIES} ${FREETYPE_LIBRARIES})
+list(APPEND LIBRARIES_TO_LINK ${EXPAT_LIBRARIES} ${FREETYPE_LIBRARIES} ${PNG_LIBRARY} ${ZLIB_LIBRARY} ${ICONV_LIBRARY})
 
 if(BUILD_SHARED)
 	add_library(fontconfig SHARED ${FONTCONFIG})
@@ -107,4 +113,3 @@ target_link_libraries(fc-lang fontconfig)
 target_link_libraries(fc-match fontconfig)
 target_link_libraries(fc-query fontconfig)
 target_link_libraries(fc-scan fontconfig)
-
