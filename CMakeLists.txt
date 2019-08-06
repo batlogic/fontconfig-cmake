@@ -48,7 +48,7 @@ find_package(expat)
 find_package(freetype)
 find_package(libpng)
 find_package(zlib)
-find_package(libiconv)
+find_package(iconv)
 
 
 set(DIR ${CMAKE_CURRENT_LIST_DIR})
