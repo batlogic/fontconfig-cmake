@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(fontconfig C)
+ENABLE_LANGUAGE(CXX)
+
+https://github.com/batlogic/fontconfig-cmake.git
 
 option(BUILD_SHARED "build shared libraries" ON)
 option(BUILD_STATIC "build static libraries" OFF)
