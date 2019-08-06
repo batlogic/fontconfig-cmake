@@ -1,3 +1,13 @@
+ENABLE_LANGUAGE(CXX)
+
+#option(FC_BUILD_ZLIB "Custom zlib Location, else find_package is used" OFF)
+#
+#if(NOT FC_BUILD_ZLIB)
+#  find_package(ZLIB REQUIRED)
+#  include_directories(${ZLIB_INCLUDE_DIR})
+#endif()
+
+
 cmake_minimum_required(VERSION 2.8)
 
 project(fontconfig C)
@@ -13,6 +23,27 @@ if(MSVC)
 	list(APPEND LIBRARIES_TO_LINK ${ICONV_LIBRARIES})
 	list(APPEND CMAKE_REQUIRED_DEFINITIONS -D_CRT_NONSTDC_NO_WARNINGS)
 	include_directories(${ICONV_INCLUDE_DIR})
+	
+	
+	set(PNG_LIBRARY_DIR "$ENV{PNG_LIBRARY_DIR}" CACHE PATH "libpng directory")
+	find_path(PNG_INCLUDE_DIR
+		NAMES png.h PATH_SUFFIXES libpng
+		HINTS ${PNG_LIBRARY_DIR}/include)
+	find_library(LIBPNG_LIBRARIES
+		NAMES libpng
+		HINTS ${PNG_LIBRARY_DIR}/lib)
+	find_package_handle_standard_args(LIBPNG
+		DEFAULT_MSG LIBPNG_LIBRARIES PNG_INCLUDE_DIR)
+		
+	set(ZLIB_LIBRARY_DIR "$ENV{ZLIB_LIBRARY_DIR}" CACHE PATH "zlib directory")
+	find_path(ZLIB_INCLUDE_DIR
+		NAMES zlib.h PATH_SUFFIXES zlib
+		HINTS ${ZLIB_LIBRARY_DIR}/include)
+	find_library(LIBPNG_LIBRARIES
+		NAMES zlib
+		HINTS ${ZLIB_LIBRARY_DIR}/lib)
+	find_package_handle_standard_args(ZLIB
+		DEFAULT_MSG LIBPNG_LIBRARIES ZLIB_INCLUDE_DIR)		
 endif()
 
 include(CheckIncludeFile)
@@ -50,7 +81,7 @@ find_package(expat)
 find_package(freetype)
 find_package(libpng)
 find_package(zlib)
-find_package(iconv)
+
 
 
 set(DIR ${CMAKE_CURRENT_LIST_DIR})
